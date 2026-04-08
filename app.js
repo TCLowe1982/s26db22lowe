@@ -4,10 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+console.log('Loading app.js...');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var gridRouter = require('./routes/grid');
 var pickRouter = require('./routes/pick');
+
+console.log('Routes loaded successfully');
 
 var app = express();
 
@@ -44,5 +48,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+console.log('App configuration complete');
 
 module.exports = app;
