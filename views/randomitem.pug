@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1= title
+  - var image_names = ["M67b.jpg", "Mk-82_xxl.jpg", "Mk-84_xxl.jpg", "FAB-250-M62.jpg", "MOABAFAM.jpg"]
+  - for(let i=0; i<3; i++) {
+    - var randomIndex = Math.floor(Math.random()*5)
+    - var selectedImage = image_names[randomIndex]
+    img(src=`/images/${selectedImage}`, alt=`${selectedImage}`, height="300", width="300")
+  - }

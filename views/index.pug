@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1= "Will this change anything?"
+  p Welcome to #{title}
+  button(type="button", class="btn btn-secondary", onclick="reduce()") Sample Button
+  div#use take some away
+  
+  script.
+    var current = 11;
+    var quantity = 2;
+    
+    function reduce() {
+      current = current - quantity;
+      if (current < 0) {
+        current = 0;
+      }
+      document.getElementById("use").innerHTML = "Reduced by " + quantity + " to " + current;
+    }
+  
+  a(href="/bombs") View Bombs

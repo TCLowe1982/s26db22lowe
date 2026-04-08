@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  
+  - var results = [{name: "M67 Grenade", type: "Fragmentation", explosive: "Composition B", yield: "15m radius"}, {name: "MOAB", type: "Air-blast", explosive: "H6", yield: "11 tons"}, {name: "Mark 82", type: "General Purpose", explosive: "Tritonal", yield: "500 lbs"}]
+  
+  div.container-fluid
+    div.row
+      each item in results
+        div.col-sm-2
+          p Name: #{item.name}
+          p Type: #{item.type}
+          p Explosive: #{item.explosive}
+          p Yield: #{item.yield}
+  
