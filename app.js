@@ -19,11 +19,55 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once("open", function(){console.log("Connection to DB succeeded")});
 
+Book = require("./models/book");
+
+// We can seed the collection if needed
+async function recreateDB() {
+  // Delete everything
+  await Book.deleteMany();
+
+  let book1 = new Book({
+    title: "To Kill a Mockingbird",
+    author: "Harper Lee",
+    isbn: "978-0-06-112008-4",
+    pages: 324,
+    price: 15.99,
+    genre: "Fiction"
+  });
+
+  let book2 = new Book({
+    title: "1984",
+    author: "George Orwell",
+    isbn: "978-0-452-28423-4",
+    pages: 328,
+    price: 14.99,
+    genre: "Dystopian"
+  });
+
+  let book3 = new Book({
+    title: "The Great Gatsby",
+    author: "F. Scott Fitzgerald",
+    isbn: "978-0-7432-7356-5",
+    pages: 180,
+    price: 12.99,
+    genre: "Classic"
+  });
+
+  await book1.save();
+  await book2.save();
+  await book3.save();
+
+  console.log("Database seeded");
+}
+
+let reseed = false;
+if (reseed) { recreateDB(); }
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var gridRouter = require('./routes/grid');
 var pickRouter = require('./routes/pick');
+var resourceRouter = require('./routes/resource');
 
 console.log('Routes loaded successfully');
 
@@ -43,6 +87,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/grid', gridRouter);
 app.use('/selector', pickRouter);
+app.use('/resource', resourceRouter);
 app.get('/bombs', function(req, res) {
   res.render('bombs', { title: 'Search Results bombs' });
 });
