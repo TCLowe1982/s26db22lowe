@@ -18,8 +18,26 @@ exports.book_detail = function(req, res) {
 };
 
 // Handle Book create on POST.
-exports.book_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book create POST');
+exports.book_create_post = async function(req, res) {
+    console.log(req.body)
+    let document = new Book();
+    // We are looking for a body, since POST does not have query parameters.
+    // Even though bodies can be in many different formats, we will be picky
+    // and require JSON. We need to pull out the fields from req.body
+    document.title = req.body.title;
+    document.author = req.body.author;
+    document.isbn = req.body.isbn;
+    document.pages = req.body.pages;
+    document.price = req.body.price;
+    document.genre = req.body.genre;
+    try{
+        let result = await document.save();
+        res.send(result);
+    }
+    catch(err){
+        res.status(500);
+        res.send(`{"error": ${err}}`);
+    }  
 };
 
 // Handle Book delete on DELETE.
