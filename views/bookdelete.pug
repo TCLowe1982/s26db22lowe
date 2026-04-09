@@ -1,0 +1,9 @@
+extends bookdetail
+
+block control
+  div.mt-3
+    h3.text-danger Are you sure you want to delete this book?
+    form(method='POST' action=`/books/delete`)
+      input(type='hidden' name='id' value=toShow._id)
+      button.btn.btn-danger.mr-2(type='submit') Delete
+      button.btn.btn-secondary(type='button' onclick="window.location.href='/books'") Cancel

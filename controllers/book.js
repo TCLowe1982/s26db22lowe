@@ -13,8 +13,14 @@ exports.book_list = async function(req, res) {
 };
 
 // for a specific Book.
-exports.book_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book detail: ' + req.params.id);
+exports.book_detail = async function(req, res) {
+    try {
+        result = await Book.findById(req.params.id)
+        res.send(result)
+    } catch (error) {
+        res.status(500)
+        res.send(`{"error": document for id ${req.params.id} not found`);
+    }
 };
 
 // Handle Book create on POST.
@@ -41,13 +47,33 @@ exports.book_create_post = async function(req, res) {
 };
 
 // Handle Book delete on DELETE.
-exports.book_delete = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book delete DELETE ' + req.params.id);
+exports.book_delete = async function(req, res) {
+    try {
+        result = await Book.findByIdAndDelete(req.params.id)
+        res.send(result)
+    } catch (error) {
+        res.status(500)
+        res.send(`{"error": Error deleting ${req.params.id}}`);
+    }
 };
 
 // Handle Book update form on PUT.
-exports.book_update_put = function(req, res) {
-    res.send('NOT IMPLEMENTED: Book update PUT' + req.params.id);
+exports.book_update_put = async function(req, res) {
+    try {
+        let toUpdate = await Book.findById(req.params.id)
+        // Update properties
+        if(req.body.title) toUpdate.title = req.body.title;
+        if(req.body.author) toUpdate.author = req.body.author;
+        if(req.body.isbn) toUpdate.isbn = req.body.isbn;
+        if(req.body.pages) toUpdate.pages = req.body.pages;
+        if(req.body.price) toUpdate.price = req.body.price;
+        if(req.body.genre) toUpdate.genre = req.body.genre;
+        let result = await toUpdate.save();
+        res.send(result)
+    } catch (err) {
+        res.status(500)
+        res.send(`{"error": ${err}: Update for id ${req.params.id} failed}`);
+    }
 };
 
 // VIEWS
@@ -61,4 +87,99 @@ exports.book_view_all_Page = async function(req, res) {
         res.status(500);
         res.send(`{"error": ${err}}`);
     }  
+};
+
+// Handle a show one view with id specified by query
+exports.book_view_one_Page = async function(req, res) {
+    try{
+        result = await Book.findById( req.query.id)
+        res.render('bookinspect', { title: 'Book Detail', toShow: result });
+    }
+    catch(err){
+        res.status(500)
+        res.send(`{'error': '${err}'}`);
+    }
+};
+
+// Handle building the view for creating a book.
+exports.book_create_Page =  function(req, res) {
+    try{
+        res.render('bookcreate', { title: 'Create New Book' });
+    }
+    catch(err){
+        res.status(500)
+        res.send(`{'error': '${err}'}`);
+    }
+};
+
+// Handle building the view for updating a book.
+exports.book_update_Page =  async function(req, res) {
+    try{
+        let result = await Book.findById(req.query.id)
+        res.render('bookupdate', { title: 'Update Book', book: result });
+    }
+    catch(err){
+        res.status(500)
+        res.send(`{'error': '${err}'}`);
+    }
+};
+
+// Handle a delete one view with id from query
+exports.book_delete_Page = async function(req, res) {
+    try{
+        result = await Book.findById(req.query.id)
+        res.render('bookdelete', { title: 'Delete Book', toShow: result });
+    }
+    catch(err){
+        res.status(500)
+        res.send(`{'error': '${err}'}`);
+    }
+};
+
+// Handle form-based create POST
+exports.book_create_Page_post = async function(req, res) {
+    let document = new Book();
+    document.title = req.body.title;
+    document.author = req.body.author;
+    document.isbn = req.body.isbn;
+    document.pages = req.body.pages;
+    document.price = req.body.price;
+    document.genre = req.body.genre;
+    try{
+        let result = await document.save();
+        res.redirect('/books');
+    }
+    catch(err){
+        res.status(500);
+        res.send(`{"error": ${err}}`);
+    }  
+};
+
+// Handle form-based update POST
+exports.book_update_Page_post = async function(req, res) {
+    try {
+        let toUpdate = await Book.findById(req.body.id)
+        toUpdate.title = req.body.title;
+        toUpdate.author = req.body.author;
+        toUpdate.isbn = req.body.isbn;
+        toUpdate.pages = req.body.pages;
+        toUpdate.price = req.body.price;
+        toUpdate.genre = req.body.genre;
+        let result = await toUpdate.save();
+        res.redirect('/books');
+    } catch (err) {
+        res.status(500)
+        res.send(`{"error": ${err}}`);
+    }
+};
+
+// Handle form-based delete POST
+exports.book_delete_Page_post = async function(req, res) {
+    try {
+        result = await Book.findByIdAndDelete(req.body.id)
+        res.redirect('/books');
+    } catch (error) {
+        res.status(500)
+        res.send(`{"error": Error deleting}`);
+    }
 };

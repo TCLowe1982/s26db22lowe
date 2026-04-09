@@ -2,14 +2,44 @@ extends layout
 
 block content
   h1= title
+  
   div(class="container-fluid")
+    div(class="row m-1")
+      button.btn.btn-primary.ml-1(type="button" onclick="window.location.href='/books/create'") Create New Book
+    
     div(class="row")
-      each book in results
-        div(class="col-sm-2")
-          p Title: #{book.title}
-          p Author: #{book.author}
-          p ISBN: #{book.isbn}
-          p Pages: #{book.pages}
-          p Price: $#{book.price}
-          p Genre: #{book.genre}
-          hr
+      each book, index in results
+        div(class="col-sm-3 m-1 p-3 bg-light border")
+          h5 #{book.title}
+          p.mb-1
+            strong Author: 
+            | #{book.author}
+          p.mb-1
+            strong ISBN: 
+            | #{book.isbn}
+          p.mb-1
+            strong Price: 
+            | $#{book.price}
+          p.mb-1
+            strong Genre: 
+            | #{book.genre}
+          div.mt-2
+            button.btn.btn-info.btn-sm.mr-1(onclick=`buy(${index})`) Detail
+            button.btn.btn-warning.btn-sm.mr-1(onclick=`update(${index})`) Update
+            button.btn.btn-danger.btn-sm(onclick=`deleteBook(${index})`) Delete
+  
+  script.
+    function buy(index) {
+      let books = !{JSON.stringify(results)};
+      window.location.href = '/books/detail?id=' + books[index]._id;
+    }
+    
+    function update(index) {
+      let books = !{JSON.stringify(results)};
+      window.location.href = '/books/update?id=' + books[index]._id;
+    }
+    
+    function deleteBook(index) {
+      let books = !{JSON.stringify(results)};
+      window.location.href = '/books/delete?id=' + books[index]._id;
+    }
