@@ -31,3 +31,16 @@ exports.book_delete = function(req, res) {
 exports.book_update_put = function(req, res) {
     res.send('NOT IMPLEMENTED: Book update PUT' + req.params.id);
 };
+
+// VIEWS
+// Handle a show all view
+exports.book_view_all_Page = async function(req, res) {
+    try{
+        theBooks = await Book.find();
+        res.render('books', { title: 'Book Search Results', results: theBooks });
+    }
+    catch(err){
+        res.status(500);
+        res.send(`{"error": ${err}}`);
+    }  
+};

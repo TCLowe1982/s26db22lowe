@@ -1,0 +1,15 @@
+extends layout
+
+block content
+  h1= title
+  div(class="container-fluid")
+    div(class="row")
+      each book in results
+        div(class="col-sm-2")
+          p Title: #{book.title}
+          p Author: #{book.author}
+          p ISBN: #{book.isbn}
+          p Pages: #{book.pages}
+          p Price: $#{book.price}
+          p Genre: #{book.genre}
+          hr

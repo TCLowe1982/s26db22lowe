@@ -68,6 +68,7 @@ var usersRouter = require('./routes/users');
 var gridRouter = require('./routes/grid');
 var pickRouter = require('./routes/pick');
 var resourceRouter = require('./routes/resource');
+var booksRouter = require('./routes/books');
 
 console.log('Routes loaded successfully');
 
@@ -88,6 +89,7 @@ app.use('/users', usersRouter);
 app.use('/grid', gridRouter);
 app.use('/selector', pickRouter);
 app.use('/resource', resourceRouter);
+app.use('/books', booksRouter);
 app.get('/bombs', function(req, res) {
   res.render('bombs', { title: 'Search Results bombs' });
 });
