@@ -3,7 +3,7 @@ extends layout
 block content
   h1= title
   - let bookid = toShow._id
-  - let title = toShow.title
+  - let booktitle = toShow.title
   - let author = toShow.author
   - let isbn = toShow.isbn
   - let pages = toShow.pages
@@ -15,7 +15,7 @@ block content
     div #{bookid}
   div.row
     div(class='bookAttr mr-3') Title is:
-    div #{title}
+    div #{booktitle}
   div.row
     div(class='bookAttr mr-3') Author is:
     div #{author}
