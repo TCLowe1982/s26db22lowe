@@ -1,21 +1,38 @@
 extends layout
 
 block content
-  h1= "Will this change anything?"
-  p Welcome to #{title}
-  button(type="button", class="btn btn-secondary", onclick="reduce()") Sample Button
-  div#use take some away
+  h1 Book Database Application
+  p Welcome to the Book RESTful API
   
-  script.
-    var current = 11;
-    var quantity = 2;
-    
-    function reduce() {
-      current = current - quantity;
-      if (current < 0) {
-        current = 0;
-      }
-      document.getElementById("use").innerHTML = "Reduced by " + quantity + " to " + current;
-    }
+  h2 Web Views
+  ul
+    li 
+      a(href="/books") View All Books
+    li 
+      a(href="/grid") Grid Demo
+    li 
+      a(href="/randomitem") Random Item Picker
   
-  a(href="/bombs") View Bombs
+  h2 RESTful API Endpoints
+  p Base URL: /api
+  
+  h3 Available Operations:
+  ul
+    li 
+      strong GET /api/books 
+      | - Get all books
+    li 
+      strong GET /api/books/:id 
+      | - Get a specific book by ID
+    li 
+      strong POST /api/books 
+      | - Create a new book
+    li 
+      strong PUT /api/books/:id 
+      | - Update a book by ID
+    li 
+      strong DELETE /api/books/:id 
+      | - Delete a book by ID
+  
+  p 
+    em Use tools like Postman, Thunder Client, or curl to test the API endpoints.
