@@ -158,15 +158,19 @@ exports.book_create_Page_post = async function(req, res) {
 
 // Handle form-based update POST
 exports.book_update_Page_post = async function(req, res) {
+    console.log("Update POST body:", req.body);
     try {
+        // Pull the current state of the object
         let toUpdate = await Book.findById(req.body.id)
-        toUpdate.title = req.body.title;
-        toUpdate.author = req.body.author;
-        toUpdate.isbn = req.body.isbn;
-        toUpdate.pages = req.body.pages;
-        toUpdate.price = req.body.price;
-        toUpdate.genre = req.body.genre;
+        // Update properties only if they are defined
+        if(req.body.title) toUpdate.title = req.body.title;
+        if(req.body.author) toUpdate.author = req.body.author;
+        if(req.body.isbn) toUpdate.isbn = req.body.isbn;
+        if(req.body.pages) toUpdate.pages = req.body.pages;
+        if(req.body.price) toUpdate.price = req.body.price;
+        if(req.body.genre) toUpdate.genre = req.body.genre;
         let result = await toUpdate.save();
+        console.log("Update successful:", result);
         res.redirect('/books');
     } catch (err) {
         res.status(500)
