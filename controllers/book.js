@@ -97,6 +97,11 @@ exports.book_view_one_Page = async function(req, res) {
     console.log("single view for id "  + req.query.id)
     try{
         result = await Book.findById( req.query.id)
+        if (!result) {
+            res.status(404)
+            res.send(`{'error': 'Book not found for id ${req.query.id}'}`);
+            return;
+        }
         res.render('bookinspect', { title: 'Book Detail', toShow: result });
     }
     catch(err){
@@ -120,10 +125,17 @@ exports.book_create_Page =  function(req, res) {
 };
 
 // Handle building the view for updating a book.
+// query provides the id
 exports.book_update_Page =  async function(req, res) {
+    console.log("update view for item "+req.query.id)
     try{
         let result = await Book.findById(req.query.id)
-        res.render('bookupdate', { title: 'Update Book', book: result });
+        if (!result) {
+            res.status(404)
+            res.send(`{'error': 'Book not found for id ${req.query.id}'}`);
+            return;
+        }
+        res.render('bookupdate', { title: 'Book Update', toShow: result });
     }
     catch(err){
         res.status(500)
@@ -133,8 +145,14 @@ exports.book_update_Page =  async function(req, res) {
 
 // Handle a delete one view with id from query
 exports.book_delete_Page = async function(req, res) {
+    console.log("delete view for item "  + req.query.id)
     try{
         result = await Book.findById(req.query.id)
+        if (!result) {
+            res.status(404)
+            res.send(`{'error': 'Book not found for id ${req.query.id}'}`);
+            return;
+        }
         res.render('bookdelete', { title: 'Delete Book', toShow: result });
     }
     catch(err){
