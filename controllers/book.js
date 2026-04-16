@@ -49,12 +49,14 @@ exports.book_create_post = async function(req, res) {
 
 // Handle Book delete on DELETE.
 exports.book_delete = async function(req, res) {
+    console.log("delete "  + req.params.id)
     try {
         result = await Book.findByIdAndDelete(req.params.id)
+        console.log("Removed " + result)
         res.send(result)
-    } catch (error) {
+    } catch (err) {
         res.status(500)
-        res.send(`{"error": Error deleting ${req.params.id}}`);
+        res.send(`{"error": Error deleting ${err}}`);
     }
 };
 
