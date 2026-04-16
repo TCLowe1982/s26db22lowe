@@ -1,9 +1,65 @@
-extends bookdetail
+extends layout
 
-block control
-  div.mt-3
-    h3.text-danger Are you sure you want to delete this book?
-    form(method='POST' action=`/books/delete`)
-      input(type='hidden' name='id' value=toShow._id)
-      button.btn.btn-danger.mr-2(type='submit') Delete
-      button.btn.btn-secondary(type='button' onclick="window.location.href='/books'") Cancel
+block content
+  h1= title
+
+  if (toShow == null)
+    h2 No instance to delete
+  else
+    - let bookid = toShow._id
+    - let booktitle = toShow.title
+    - let bookauthor = toShow.author
+    - let bookisbn = toShow.isbn
+    - let bookpages = toShow.pages
+    - let bookprice = toShow.price
+    - let bookgenre = toShow.genre
+    - let actionid = "/resource/books/" + bookid
+    script let actionid = "#{actionid}"
+    div
+      div.row
+        div(class='bookAttr mr-3') Book ID is:
+        div #{bookid}
+      div.row
+        div(class='bookAttr mr-3') Book Title is:
+        div #{booktitle}
+      div.row
+        div(class='bookAttr mr-3') Book Author is:
+        div #{bookauthor}
+      div.row
+        div(class='bookAttr mr-3') Book ISBN is:
+        div #{bookisbn}
+      div.row
+        div(class='bookAttr mr-3') Book Pages is:
+        div #{bookpages}
+      div.row
+        div(class='bookAttr mr-3') Book Price is:
+        div #{bookprice}
+      div.row
+        div(class='bookAttr mr-3') Book Genre is:
+        div #{bookgenre}
+
+    button(class="btn btn-danger m-2" onclick="deleteOnid()") Delete
+    button(class="btn btn-secondary m-2" onclick="cancel()") Cancel
+
+  script.
+    function cancel() {
+      // Go back to the home page for the book collection
+      window.location.href='/books'
+    }
+  script.
+    function deleteOnid() {
+      console.log("starting delete")
+      // delete first
+      fetch(actionid, {
+        method: 'DELETE'      // Don't need a body for the delete
+      }).then((resp) => {
+        return resp.json(); // or resp.text() or whatever the server sends
+      }).then((body) => {
+        alert("Delete succeded")
+        window.location.href='/books'
+        // TODO handle body
+      }).catch((error) => {
+        // TODO handle error
+        alert("Delete failed " + error )
+      });
+    }
